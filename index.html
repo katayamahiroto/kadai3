@@ -1,0 +1,179 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+  </head>
+<body>
+ <script>
+      // ページの読み込みを待つ
+      window.addEventListener('DOMContentLoaded', init);
+
+      function init() {
+        // サイズを指定
+        const width = 800
+        const height = 600;
+
+        // レンダラーを作成
+        var renderer = new THREE.WebGLRenderer();
+        document.body.appendChild(renderer.domElement);
+        renderer.setSize(width, height);
+        // レンダラー：シャドウを有効にする
+        renderer.shadowMap.enabled = true;
+
+
+        // シーンを作成
+        const scene = new THREE.Scene();
+
+        // カメラを作成
+        const camera = new THREE.PerspectiveCamera(45, width / height);
+        // カメラの初期座標を設定
+        camera.position.set(4, 4, 9);
+
+        // カメラコントローラーを作成
+        const controls = new THREE.OrbitControls(camera, document.body); 
+        
+        // 平行光源(色、強さ）主光源
+        var directionalLightM = new THREE.DirectionalLight(0xffffff,0.3);
+        directionalLightM.position.set(0, 10, -5);
+        directionalLightM.castShadow = true; 
+        //シーンに追加
+        scene.add(directionalLightM);
+
+        // 照明を作成SpotLight(色, 光の強さ, 距離, 照射角, ボケ具合, 減衰率)
+        var light = new THREE.SpotLight(0xffffff, 2, 100, Math.PI / 20, 0.2);
+        light.position.set(0,10, -15);
+        //light.target.position.set( 0, 5, -100 );
+        // ライトに影を有効にする
+        light.castShadow = true;
+        //light.shadow.mapSize.width = 2048;
+        //light.shadow.mapSize.height = 2048;
+        //scene.add(light);
+
+        // 平行光源(色、強さ）補助光源
+        var directionalLightS = new THREE.DirectionalLight(0xffffff,0.3);
+        directionalLightS.position.set(-1, -1, 1);
+        // シーンに追加
+        //scene.add(directionalLightS);
+
+        // helper
+        const gridHelper = new THREE.GridHelper(2,10); // size, step
+        scene.add(gridHelper);
+        const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
+        scene.add(axisHelper);
+
+        // 平面を作成
+        var planeGeometry = new THREE.PlaneGeometry(100,100);
+        //var planeMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        var planeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+        var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.receiveShadow = true; //影がつく
+        plane.rotation.set( -Math.PI/2, 0, 0 );
+        plane.position.set(0,-5,-2);
+        scene.add(plane);
+
+        // ド―ナツの作成
+        var torusGeometry=new THREE.TorusGeometry(0.5,0.2,4,8);
+        var torusMaterial=new THREE.MeshPhongMaterial({color:0xff00ff});
+        var torus1=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus1.castShadow = true; //影ができる
+        torus1.position.set(0,0,0);
+        //scene.add(torus1);
+
+        var torusGeometry=new THREE.TorusGeometry(0.4,0.2,4,8);
+        var torusMaterial=new THREE.MeshPhongMaterial({color:0xff000f});
+        var torus2=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus2.castShadow = true; //影ができる
+        torus2.position.set(0,0,-1.5);
+        //scene.add(torus2);
+        
+        var torus3=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus3.castShadow = true; //影ができる
+        torus3.position.set(0,0,1.5);
+        //scene.add(torus3);
+
+        var torus4=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus4.castShadow = true; //影ができる
+        torus4.position.set(0,1.5,0);
+        //scene.add(torus4);
+
+        var torus5=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus5.castShadow = true; //影ができる
+        torus5.position.set(0,-1.5,0);
+        //scene.add(torus5);
+
+        var torusGeometry=new THREE.TorusGeometry(0.3,0.2,4,8);
+        var torusMaterial=new THREE.MeshPhongMaterial({color:0xffffff});
+        var torus6=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus6.castShadow = true; //影ができる
+        torus6.position.set(0,0,-3);
+        //scene.add(torus6);
+
+        var torus7=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus7.castShadow = true; //影ができる
+        torus7.position.set(0,0,3);
+        //scene.add(torus7);
+
+        var torus8=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus8.castShadow = true; //影ができる
+        torus8.position.set(0,3,0);
+        //scene.add(torus8);
+
+        var torus9=new THREE.Mesh(torusGeometry,torusMaterial);
+        torus9.castShadow = true; //影ができる
+        torus9.position.set(0,-3,0);
+        //scene.add(torus9);
+
+        
+
+        //全体のオブジェクト
+        //const all = new THREE.Object3D(); 
+        const all = new THREE.Group()
+        all.add(torus1);
+        all.add(torus2);
+        all.add(torus3);
+        all.add(torus4);
+        all.add(torus5);
+        all.add(torus6);
+        all.add(torus7);
+        all.add(torus8);
+        all.add(torus9);
+        all.position.set(0,0,0);//箱1～4のグループの原点の位置
+        scene.add(all); 
+
+        update();
+
+        // 毎フレーム時に実行されるループイベントです
+        function update() {
+          // レンダリング
+          renderer.render(scene, camera);
+          requestAnimationFrame(update);
+
+        // 箱を回転させる
+        torus1.rotation.x += 0.02;
+        torus1.rotation.y += 0.02;
+        /*torus2.rotation.x += 0.01;
+        torus2.rotation.y += 0.01;
+        torus3.rotation.x += 0.01;
+        torus3.rotation.y += 0.01;*/
+        torus4.rotation.x += 0.02;
+        torus4.rotation.y += 0.02;
+        torus5.rotation.x += 0.02;
+        torus5.rotation.y += 0.02;
+        /*torus6.rotation.x += 0.01;
+        torus6.rotation.y += 0.01;
+        torus7.rotation.x += 0.01;
+        torus7.rotation.y += 0.01;
+        torus8.rotation.x += 0.01;
+        torus8.rotation.y += 0.01;
+        torus9.rotation.x += 0.01;
+        torus9.rotation.y += 0.01;*/
+
+        all.rotation.x += 0.01;
+        all.rotation.y += 0.01;
+
+        }
+      }
+    </script>
+</body>
+</html>
